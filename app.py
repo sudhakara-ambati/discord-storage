@@ -16,6 +16,7 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
+    clear_uploads()
     update_channel_dropdown()
     if request.method == 'POST':
         if 'file' not in request.files:
@@ -32,15 +33,16 @@ def index():
             filename = file.filename
             file_channel_name = file.filename.split('.')[0]
             file.save(os.path.join(UPLOAD_FOLDER, filename))
-            flash('File uploaded successfully!')
 
-            asyncio.run_coroutine_threadsafe(sendchunks(str(file_channel_name)), bot.loop)
+            sending_chunks = asyncio.run_coroutine_threadsafe(sendchunks(str(file_channel_name)), bot.loop)
+            sending_chunks.result()
+
+            flash("Finished uploading")
 
             return redirect('/')
 
     uploaded_files = os.listdir(UPLOAD_FOLDER)
     options = [{'value': file, 'label': file} for file in uploaded_files]
-    clear_uploads()
 
     return render_template('index.html', filebasenames=list(channel_dropdown.keys()))
 
@@ -70,7 +72,25 @@ def download():
         merge_chunks(Chunks_directory, merged_file_path)
 
     return send_file(merged_file_path, as_attachment=True)
-    
+
+@app.route('/delete_channel', methods=['POST'])
+def delete_channel():
+    selected_channel_name_delete = request.form['file']
+    selected_channel_id_delete = channel_dropdown[selected_channel_name_delete]
+    guild = bot.get_guild(1250905958264078417)
+    channel = discord.utils.get(guild.channels, id=int(selected_channel_id_delete))
+
+    if channel:
+        asyncio.run_coroutine_threadsafe(channel.delete(), bot.loop)
+        flash(f'{channel.name} deleted successfully!')
+    else:
+        flash('Channel not found!')
+
+    update_channel_dropdown()
+
+    return redirect('/')
+
+
 def update_channel_dropdown():
     global channel_dropdown
     guild = bot.get_guild(1250905958264078417)

@@ -13,25 +13,39 @@
         <button type="submit">Upload</button>
     </form>
 
-    {% with messages = get_flashed_messages(with_categories=true) %}
-      {% if messages %}
-        <ul>
-        {% for category, message in messages %}
-          <li>{{ message }}</li>
-        {% endfor %}
-        </ul>
-      {% endif %}
-    {% endwith %}
-
+    
     <h2>Download Files</h2>
     <form action="/download" method="POST">
-        <label for="file">Choose file to download:</label>
-        <select id="file" name="file">
+      <label for="file">Choose file to download:</label>
+      <select id="file" name="file">
             {% for filebasename in filebasenames %}
-                <option value="{{ filebasename }}">{{ filebasename }}</option>
+            <option value="{{ filebasename }}">{{ filebasename }}</option>
             {% endfor %}
-        </select>
+          </select>
         <button type="submit">Download</button>
-    </form>
-</body>
-</html>
+      </form>
+      
+      <h2>Delete Files</h2>
+      <form action="/delete_channel" method="POST">
+        <label for="file">Choose file to delete:</label>
+        <select id="file" name="file">
+          {% for filebasename in filebasenames %}
+          <option value="{{ filebasename }}">{{ filebasename }}</option>
+          {% endfor %}
+        </select>
+        <button type="submit">Delete</button>
+      </form>
+
+      {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+              <ul>
+              {% for category, message in messages %}
+                  <li>{{ message }}</li>
+              {% endfor %}
+              </ul>
+          {% endif %}
+      {% endwith %}
+
+    </body>
+    </html>
+    
