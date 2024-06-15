@@ -16,7 +16,6 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    clear_uploads()
     update_channel_dropdown()
     if request.method == 'POST':
         if 'file' not in request.files:
@@ -41,6 +40,7 @@ def index():
 
     uploaded_files = os.listdir(UPLOAD_FOLDER)
     options = [{'value': file, 'label': file} for file in uploaded_files]
+    clear_uploads()
 
     return render_template('index.html', filebasenames=list(channel_dropdown.keys()))
 
@@ -68,9 +68,6 @@ def download():
     if file_extension:
         merged_file_path = os.path.join(UPLOAD_FOLDER, f"{selected_channel_name}{file_extension}")
         merge_chunks(Chunks_directory, merged_file_path)
-
-    for chunk_file in chunk_files:
-        os.remove(os.path.join(Chunks_directory, chunk_file))
 
     return send_file(merged_file_path, as_attachment=True)
     

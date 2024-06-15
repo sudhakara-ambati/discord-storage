@@ -29,6 +29,11 @@ def merge_chunks(chunks_dir, output_file):
     merge = Merge(chunks_dir, os.path.dirname(output_file), os.path.basename(output_file))
     merge.merge()
 
+    chunks_delete_dir = os.listdir(Chunks_directory)
+    for chunk_delete in chunks_delete_dir:
+        chunk_to_delete = os.path.join(Chunks_directory, chunk_delete)
+        os.remove(chunk_to_delete)
+
 async def sendchunks(file_base_name):
     chunk_files_only = split_file(uploads_directory, Chunks_directory)
     all_chunk_files = [file for file in os.listdir(Chunks_directory)]
