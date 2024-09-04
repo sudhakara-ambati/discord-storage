@@ -5,7 +5,7 @@ import discord
 from discord.ext import commands
 
 bot = commands.Bot(command_prefix='!')
-token = 'MTI1MDkwMzkzNjg2NTQwNzAyNw.GZN1JH.3BwmuHbdD4a4q5twL7VvnXa-dq6PNf5YnkWVYk'
+token = 'TOKEN'
 
 uploads_directory = "uploads"
 Chunks_directory = "Chunks"
