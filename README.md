@@ -21,17 +21,11 @@
 1. **Clone the Repository:**
 
     ```bash
-    git clone https://github.com/yourusername/discord-storage.git
+    git clone https://github.com/sudhakara-ambati/discord-storage.git
     cd discord-storage
     ```
 
-2. **Install Dependencies:**
-
-    ```bash
-    pip install -r requirements.txt
-    ```
-
-3. **Configure Your Bot Token:**
+2. **Configure Your Bot Token:**
 
     Edit the ```bot.py``` file in the project root and add your Discord bot token:
 
@@ -39,7 +33,7 @@
     TOKEN=your_bot_token_here
     ```
 
-4. **Run the Flask Server:**
+3. **Run the Flask Server:**
 
     ```bash
     flask run
